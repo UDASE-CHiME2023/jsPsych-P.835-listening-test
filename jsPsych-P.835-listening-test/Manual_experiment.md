@@ -71,12 +71,7 @@ The Python script `py/jsPsych_Data_cleaning_script.py` shows how to clean the da
 
 # How to run the experiment? 
 
-## Hosting
-
-The experiment is hosted on this GitHub repository, using GitHub Pages.
-The experiment loads in the client browser using an HTML link (see HTML links section below), and it can then be performed locally.
-
-To avoid potential issues with the internet connection, you may prefer to download/clone this repository and run/open the HTML files locally. 
+Download/clone this repository and run/open the HTML files locally. 
 
 ## Data
 
@@ -106,75 +101,3 @@ The test was designed such that
 - and so on until $\mathcal{S}_4$.
 
 Once the first panel consising of participants 1 to 8 has completed the listening experiment, we will be able to compute valid MOS by averaging the 8 votes for each of the 32 audio stimuli in $\mathcal{S}_1$. By conducting the listening experiment with the subsequent panels of listeners we will increase the number of valid MOS, using other audio stimuli. This is expected to reduce the dispersion of the MOS distribution for each experimental condition as more and more panels perform the listening test.
-
-## HTML links
-
-Below is a link to a short demo with 5 sessions of one single trial. This demo can be used to quicly verify that the experiment runs correctly: 
-
-- [Demonstrator](https://matthieufra.github.io/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test_demo.html)
-
-Below are the links for all the participants: 
-
-- [Participant 1](https://matthieufra.github.io/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test_participant01.html)
-
-- [Participant 2](https://matthieufra.github.io/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test_participant02.html)
-
-- [Participant 3](https://matthieufra.github.io/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test_participant03.html)
-
-- [Participant 4](https://matthieufra.github.io/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test_participant04.html)
-
-- [Participant 5](https://matthieufra.github.io/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test_participant05.html)
-
-- [Participant 6](https://matthieufra.github.io/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test_participant06.html)
-
-- [Participant 7](https://matthieufra.github.io/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test_participant07.html)
-
-- [Participant 8](https://matthieufra.github.io/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test_participant08.html)
-
-- [Participant 9](https://matthieufra.github.io/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test_participant09.html)
-
-- [Participant 10](https://matthieufra.github.io/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test_participant10.html)
-
-- [Participant 11](https://matthieufra.github.io/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test_participant11.html)
-
-- [Participant 12](https://matthieufra.github.io/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test_participant12.html)
-
-- [Participant 13](https://matthieufra.github.io/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test_participant13.html)
-
-- [Participant 14](https://matthieufra.github.io/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test_participant14.html)
-
-- [Participant 15](https://matthieufra.github.io/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test_participant15.html)
-
-- [Participant 16](https://matthieufra.github.io/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test_participant16.html)
-
-- [Participant 17](https://matthieufra.github.io/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test_participant17.html)
-
-- [Participant 18](https://matthieufra.github.io/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test_participant18.html)
-
-- [Participant 19](https://matthieufra.github.io/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test_participant19.html)
-
-- [Participant 20](https://matthieufra.github.io/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test_participant20.html)
-
-- [Participant 21](https://matthieufra.github.io/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test_participant21.html)
-
-- [Participant 22](https://matthieufra.github.io/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test_participant22.html)
-
-- [Participant 23](https://matthieufra.github.io/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test_participant23.html)
-
-- [Participant 24](https://matthieufra.github.io/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test_participant24.html)
-
-- [Participant 25](https://matthieufra.github.io/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test_participant25.html)
-
-- [Participant 26](https://matthieufra.github.io/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test_participant26.html)
-
-- [Participant 27](https://matthieufra.github.io/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test_participant27.html)
-
-- [Participant 28](https://matthieufra.github.io/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test_participant28.html)
-
-- [Participant 29](https://matthieufra.github.io/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test_participant29.html)
-
-- [Participant 30](https://matthieufra.github.io/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test_participant30.html)
-
-- [Participant 31](https://matthieufra.github.io/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test_participant31.html)
-
-- [Participant 32](https://matthieufra.github.io/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test/UDASE2023_CHiME_listening_test_participant32.html)
