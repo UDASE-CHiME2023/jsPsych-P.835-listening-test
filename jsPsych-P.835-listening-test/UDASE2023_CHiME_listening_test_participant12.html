@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>UDASE CHiME listening experiment</title>
+
+  <!-- Load libraries -->
+  <script src="../lib/jspsych-7.3.0/dist/jspsych.js"></script>
+
+  <!-- Load jsPsych plug-ins -->
+  <script src="../lib/jspsych-7.3.0/dist/plugin-html-button-response.js" type="text/javascript"></script>
+  <script src="../lib/jspsych-7.3.0/dist/plugin-html-keyboard-response.js" type="text/javascript"></script>
+  <script src="../lib/jspsych-7.3.0/dist/plugin-html-slider-response.js" type="text/javascript"></script>
+  <script src="../lib/jspsych-7.3.0/dist/plugin-video-button-response.js" type="text/javascript"></script>
+  <script src="../lib/jspsych-7.3.0/dist/plugin-audio-button-response.js" type="text/javascript"></script>
+  <script src="../lib/jspsych-7.3.0/dist/plugin-audio-keyboard-response.js" type="text/javascript"></script>
+  <script src="../lib/jspsych-7.3.0/dist/plugin-audio-keyboard-response2.js" type="text/javascript"></script>
+  <script src="../lib/jspsych-7.3.0/dist/plugin-instructions.js" type="text/javascript"></script>
+  <script src="../lib/jspsych-7.3.0/dist/plugin-preload.js" type="text/javascript"></script>
+  <script src="../lib/jspsych-7.3.0/dist/plugin-fullscreen.js" type="text/javascript"></script>
+  <script src="../lib/jspsych-7.3.0/dist/plugin-survey-html-form.js" type="text/javascript"></script>
+  <script src="../lib/jspsych-7.3.0/dist/plugin-survey-multi-choice.js" type="text/javascript"></script>
+  <script src="../lib/jspsych-7.3.0/dist/plugin-survey-text.js" type="text/javascript"></script>
+  <script src="../lib/jspsych-7.3.0/dist/plugin-call-function.js" type="text/javascript"></script>
+
+  <!-- Load experiment configuration file -->
+  <script src="js/config.js" type="text/javascript"></script> 
+  <script src="js/subject_12.json" type="text/javascript"></script> 
+
+  <!-- Load CSS styles -->
+  <link href="../lib/jspsych-7.3.0/dist/jspsych.css" rel="stylesheet" type="text/css"></link>
+  
+</head>
+<body></body>
+<script>
+
+/*
+
+Code of CHiME UDASE listening task experiment.
+
+2023/04/18
+
+AUTHOR: Matthieu Fraticelli / fraticelli.matthieu@hotmail.fr
+
+
+*/
+
+//-------------------------------------------------------------------------------------------------------------
+
+console.log(all_trials.length)
+
+
+// Initialize jsPsych
+var jsPsych = initJsPsych({
+      on_finish: function() {
+      //jsPsych.data.displayData(); 
+        jsPsych.data.get().localSave('csv',`${uniqueID}_data.csv`);
+       },
+      on_trial_start: function() {
+       },
+      on_trial_finish: function(){
+
+       },
+    }); 
+  
+  
+// Initialize timeline.
+var timeline = [];
+
+
+
+//PARAM -------------------------------------------------------------------------------------------------------------
+
+// var audio_test = new Audio('audio/pinknoise.wav');
+// console.log(audio_test.duration)
+
+// async function getLength() {
+//   return new Promise((resolve) => {
+//     audio_test.addEventListener('loadedmetadata', function() {
+//       resolve(audio_test.duration);
+//     });
+//   });
+// }
+
+// var length ;
+
+// var getLengthAudio = {
+//   type: jsPsychCallFunction,
+//   async: true,
+//   func: (done) => {
+//     length = getLength()
+//     console.log(length)
+//     done(length)
+//   }
+
+// };
+
+// timeline.push(getLengthAudio);
+
+function getSessionLength(all_trials) {
+  // Create an object to store the session lengths
+  var sessionLengths = {};
+
+  // Iterate over each trial in the array
+  for (var i = 0; i < all_trials.length; i++) {
+    var trial = all_trials[i];
+    var session = trial.session.toString(); // Convert session to a string
+
+    // If the session exists in the sessionLengths object, increment its count
+    if (session in sessionLengths) {
+      sessionLengths[session]++;
+    } else {
+      // If the session doesn't exist, initialize it with a count of 1
+      sessionLengths[session] = 1;
+    }
+  }
+
+  return sessionLengths;
+}
+
+var sessions = getSessionLength(all_trials)
+console.log(sessions)
+
+
+var uniqueID; 
+var soundListened = false;
+var audio;
+var q = 0; 
+var i = 0;
+var k = 0;
+var TEST = 10;
+var soundPlayed; 
+var labels;
+var prompt; 
+var preprompt; 
+var responseScale;
+
+var keyPress1;
+var rtKey1;
+var rtArray1 = [];
+    
+var keyPress2;
+var rtKey2;
+var rtArray2 = [];
+    
+var keyPress3;
+var rtKey3;
+var rtArray3 = [];
+    
+var keyPress4;
+var rtKey4;
+var rtArray4 = [];
+
+  
+//CODE BELOW -------------------------------------------------------------------------------------------------------------
+
+var welcome = {
+      
+      type: jsPsychHtmlButtonResponse,
+      stimulus: `
+
+       <p><img src="img/logo.png" width="200" height="auto" style="margin-left: 30px;"></p>
+
+      
+       <p style="font-size:25px;border: 0px solid #000;border-radius: 5px; color:#222;padding: 8px; font-family: sans-serif">Welcome</p><hr>
+       <p>Thanks for participing in this listening test.</p>
+       <p style="font-size:18px">To begin, click on <b>Continue</b>.</p>
+  `,
+      choices: ['Continue'],
+      on_start: function(){
+        var IDLetter = ['A','B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Y', 'Y', 'Z']
+        var IDLetterChoose = jsPsych.randomization.shuffle(IDLetter).slice(0, 3).join('')
+        var randomNumberID = `${Math.floor((Math.random()*1000))}`
+        uniqueID = `${Math.floor((Math.random()*100))}`+`-${IDLetterChoose}`+`-${Math.floor(Date.now()-1000000000000)}`; 
+        console.log(uniqueID)
+        jsPsych.data.addProperties({subject: uniqueID});
+        console.log(Date(Date.now()).toLocaleString().split(',')[0])
+        return uniqueID
+      },
+    };
+    
+timeline.push(welcome);
+
+
+//To switch in fullscreen
+var enter_fullscreen = {
+      type: jsPsychFullscreen,
+      message: "<p><i>You're about to enter fullscreen mode.</i></p>",
+      button_label: "Continue",
+      fullscreen_mode: true
+      }; 
+
+timeline.push(enter_fullscreen)
+
+
+var instructions = {
+    type: jsPsychInstructions,
+    pages: [
+    `<p><b>Instructions</b></p><hr><p style="text-align: justify; text-justify: inter-word;">${CONSIGNE1}</p>`,
+    ],
+    button_label_next: "Continue",
+    button_label_previous: "Previous",
+    show_clickable_nav: true,
+};
+
+timeline.push(instructions); 
+
+
+var loudnessTest1 = {
+      type: jsPsychHtmlButtonResponse,
+      stimulus: `<p style="font-size:25px; color:black;">Listening level adjustment</p><hr>
+                 <p><i>First we need to check the loudness of your sound system.</i></p>
+                 <p>Please click on <strong>continue</strong></p><p></p>`,
+      choices: ['Continue'],
+    };
+    
+timeline.push(loudnessTest1);
+    
+
+
+var audio = new Audio('audio/pinknoise.wav');
+var resultSlider;
+
+
+function dBtoLin(x) {
+  x = 0.5 * Math.exp(Math.log(10) / 20 * x);
+  return x 
+}
+
+
+var loudnessTest2 = {
+  type: jsPsychHtmlSliderResponse, //jsPsychAudioSliderResponse,
+  stimulus: `<p style="font-size:25px; color:black;">Listening level adjustment</p><hr>
+  <i><p>Please click on</i> 
+      <span style="font-size:15px;border: 1px solid #ccc; line-height: 1.4;color: #333;padding: 7.5px 12px; font-family: sans-serif; background-color: white; margin: 5px; border-radius: 5px;">1</span>,
+       <span style="font-size:15px;border: 1px solid #ccc; line-height: 1.4;color: #333;padding: 7.5px 12px; font-family: sans-serif; background-color: white; margin: 5px; border-radius: 5px;">2</span>,
+       <span style="font-size:15px;border: 1px solid #ccc; line-height: 1.4;color: #333;padding: 7.5px 12px; font-family: sans-serif; background-color: white; margin: 5px; border-radius: 5px;">3</span>
+       <i>and</i>
+       <span style="font-size:15px;border: 1px solid #ccc; line-height: 1.4;color: #333;padding: 7.5px 12px; font-family: sans-serif; background-color: white; margin: 5px; border-radius: 5px;">4</span>
+      </p>
+      <p><i>to listen to the different sounds.</p></i><hr>`,
+  button_label: ['Continue'],
+  prompt: `
+   <p>Adjust the volume of your headphones with the slider to a comfortable level.<p>
+   <p>When you use the slider, you'll have to press again the buttons to hear the volume change.</p>
+<p>You should be able to hear the sound clearly, and it should not be too <strong>loud</strong> or too <strong>weak</strong>.</p>
+  `,
+  labels: ["-6", "-3", "0", "+3", "+6"],
+  require_movement: false,
+  min: -6,
+  max: 6, 
+  slider_start: 0, 
+  step: 0.1, 
+  on_start: function(){
+
+        keyPress1 = null
+        rtKey1 = null
+
+        var press1 = function(info){
+        audio.pause()
+        console.log("Touch 1 pressed at " + info.rt +  " ms")
+        keyPress1 = true
+        rtArray1.push(info.rt)
+        rtKey1 = info.rt
+        audio = new Audio("data/ref/i05_f2.wav");
+        slider_value = jsPsych.getDisplayElement().querySelector("#jspsych-html-slider-response-response").valueAsNumber
+        audio.loop = false;
+        console.log(dBtoLin(slider_value))
+        audio.volume = dBtoLin(slider_value);
+        audio.play()
+        }
+        
+        keyPress2 = null
+        rtKey2 = null
+
+        var press2 = function(info){
+        audio.pause()
+        console.log("Touch 2 pressed at " + info.rt +  " ms")
+        keyPress2 = true
+        rtArray2.push(info.rt)
+        rtKey2 = info.rt
+        audio = new Audio("data/C0/S01_P04_43_output.wav");
+        slider_value = jsPsych.getDisplayElement().querySelector("#jspsych-html-slider-response-response").valueAsNumber
+        audio.loop = false;
+        console.log(dBtoLin(slider_value))
+        audio.volume = dBtoLin(slider_value);
+        audio.play()
+        }
+        
+        keyPress3 = null
+        rtKey3 = null
+
+        var press3 = function(info){
+        audio.pause()
+        console.log("Touch 3 pressed at " + info.rt +  " ms")
+        keyPress3 = true
+        rtArray3.push(info.rt)
+        rtKey3 = info.rt
+        audio = new Audio("data/C3/S21_P45_14_output.wav");
+        slider_value = jsPsych.getDisplayElement().querySelector("#jspsych-html-slider-response-response").valueAsNumber
+        audio.loop = false;
+        console.log(dBtoLin(slider_value))
+        audio.volume = dBtoLin(slider_value);
+        audio.play()
+        }
+        
+        keyPress4 = null
+        rtKey4 = null
+
+        var press4 = function(info){
+        audio.pause()
+        console.log("Touch 4 pressed at " + info.rt +  " ms")
+        keyPress4 = true
+        rtArray4.push(info.rt)
+        rtKey4 = info.rt
+        audio = new Audio("data/C1/S21_P47_15_output.wav");
+        slider_value = jsPsych.getDisplayElement().querySelector("#jspsych-html-slider-response-response").valueAsNumber
+        audio.loop = false;
+        console.log(dBtoLin(slider_value))
+        audio.volume = dBtoLin(slider_value);
+        audio.play()
+        }
+        
+
+        var keyboard1 = jsPsych.pluginAPI.getKeyboardResponse({
+          callback_function: press1,
+          valid_responses: ['1','&'],
+          rt_method: 'performance',
+          persist: true,
+          allow_held_key: true,
+        })
+        
+        var keyboard2 = jsPsych.pluginAPI.getKeyboardResponse({
+          callback_function: press2,
+          valid_responses: ['2','é'],
+          rt_method: 'performance',
+          persist: true,
+          allow_held_key: true,
+        })
+        
+        var keyboard3 = jsPsych.pluginAPI.getKeyboardResponse({
+          callback_function: press3,
+          valid_responses: ['3','"'],
+          rt_method: 'performance',
+          persist: true,
+          allow_held_key: true,
+        })
+        
+        var keyboard4 = jsPsych.pluginAPI.getKeyboardResponse({
+          callback_function: press4,
+          valid_responses: ['4',"'"],
+          rt_method: 'performance',
+          persist: true,
+          allow_held_key: true,
+        })
+  },  
+  on_finish: function(){
+    audio.pause()
+    resultSlider = jsPsych.data.getLastTrialData().trials[0].response
+    resultSlider = dBtoLin(resultSlider)
+    console.log(resultSlider)
+    return resultSlider
+  },
+};
+
+timeline.push(loudnessTest2);
+
+
+
+
+
+var startTest = {
+      type: jsPsychHtmlButtonResponse,
+      stimulus: `<p style="font-size: 25px"><b>Start of the experiment</b></p><hr>`,
+      choices: ['Continue'],
+      on_start: function(){
+          audio = new Audio('audio/Silence.mp3');
+          audio.loop = false;
+          audio.play()
+           },
+        on_finish: function(){
+           audio.pause()
+        },
+    };
+    
+timeline.push(startTest);
+
+   
+
+
+//EXPERIMENTAL PROCEDURE -------------------------------------------------------------------------------------------------------------
+
+    
+var z = 1;
+var p = 1;  
+var t = 1;
+
+//Math.floor(i/3)+1
+
+var launchSound = {
+  type: jsPsychHtmlButtonResponse,
+  stimulus:function(){
+
+    return `<p style="font-size: 25px">Session <b>${all_trials[q].session+1}</b> - Trial <b>${p}</b>/<b>${Math.floor((sessions[all_trials[q].session])/3)}</b> - Presentation <b>${t}/3</b></p>
+            <hr>
+            <p style="text-align: justify; text-justify: inter-word;">${preprompt}</p>
+            <hr>
+            <p>When you are ready, click on <b>Play sound</b></p>
+            `
+  },
+  choices: ["Play sound"],
+}
+
+
+var extractInf = {
+  type: jsPsychCallFunction,
+  func: function(){
+    console.log(`COND IS ${all_trials[q].scale}`)
+    if(all_trials[q].scale == "SIG"){
+      labels = LABELS1
+      prompt = PROMPT1
+      preprompt = PREPROMPT1
+    } else if(all_trials[q].scale == "BAK"){
+      labels = LABELS2
+      prompt = PROMPT2
+      preprompt = PREPROMPT2
+    } else if(all_trials[q].scale == "OVRL"){
+      labels = LABELS3
+      prompt = PROMPT3
+      preprompt = PREPROMPT3
+    }
+  },
+}; 
+
+/*var audioPlay = {
+  type: jsPsychAudioKeyboardResponse2,
+  prompt: `<p style= "font-size: 60px">+<p>`,
+  stimulus: function(){
+    console.log(q)
+    soundPlayed = all_trials[q].file
+    console.log(`SOUND: ${soundPlayed}`)
+    return soundPlayed
+  },
+  choices: "NO_KEYS",
+  trial_ends_after_audio: true,
+  volumeToPlay: 0,
+}*/
+
+var audioPlay = {
+  type: jsPsychHtmlKeyboardResponse, 
+  stimulus: `<p style= "font-size: 60px">+<p>`,
+  choices: "NO_KEYS",
+  trial_duration: 5000, 
+  on_start: function(){
+          console.log(q)
+          soundPlayed = all_trials[q].file
+          audio = new Audio(soundPlayed);
+          console.log(`SOUND: ${soundPlayed}`)
+          audio.loop = false;
+          //console.log(document.getElementById(soundPlayed).duration)
+          console.log(resultSlider)
+          audio.volume = resultSlider;
+          audio.play()
+         
+          return soundPlayed
+  },
+  on_finish: function(){
+          audio.pause()
+  },
+}
+
+
+
+var task = {
+  type: jsPsychHtmlSliderResponse, //jsPsychAudioSliderResponse,
+    stimulus: function(){
+    
+    return  `
+     <p style="font-size: 25px">Session <b>${all_trials[q].session+1}</b> - Trial <b>${p}</b>/<b>${Math.floor((sessions[all_trials[q].session])/3)}</b> - Presentation <b>${t}/3</b></p><hr> 
+     <p style="text-align: justify; text-justify: inter-word;">${prompt}</p>
+     <p style="color: white; font-size:10px">WWW</p>`},//soundEval[q],
+    labels: function(){
+      return labels
+    },
+    button_label: ['Continue'],
+    min: 1,
+    max: 5,
+    step: 1,
+    slider_width: 700,
+    post_trial_gap: 250,
+  //response_allowed_while_playing: true,
+    require_movement: true,
+  slider_start: function(){
+      return Math.floor(Math.random()*5)
+    },
+  on_finish: function(){
+    responseScale = jsPsych.data.getLastTrialData().trials[0].response
+    console.log(`RESP IS ${responseScale}`)
+  }
+};
+
+
+
+var dataSave = {
+  type: jsPsychHtmlKeyboardResponse,
+  stimulus: "",
+  choices: ["NO_KEYS"],
+  trial_duration: 10,
+  data: function(){
+    return {
+        task: 'REPONSE SUJET',
+        id: uniqueID,
+        date: Date(Date.now()).toLocaleString().split(',')[0],
+        vol: `${resultSlider}`,
+        soundPlayed: `${soundPlayed}`,  //`${}`,
+        cond:`${all_trials[q].scale}`,
+        subset:`${all_trials[q].subset}`,
+        session:`${all_trials[q].session}`,
+        responseScale: `${responseScale}`,
+      }
+  },
+  on_finish: function(){
+    console.log(`Z is ${z}`)
+    if(z % 3 === 0){
+      p = p+1
+      t = t % 3
+      console.log("new sound")
+    } else {
+      console.log("same sound")
+    }
+    console.log(`t is ${t}`)
+    t = t+1
+    z = z+1
+  },
+}
+
+var pause = {
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `<p style="font-size: 25px"><b>Break</b></p><hr>
+              <p>Please take a break, and click on the button when you are ready to continue.</p>`,
+  choices: ["Continue the experiment"],
+  on_finish: () => {jsPsych.data.get().localSave('csv',`${uniqueID}_data.csv`)},
+  on_start: () => {p = 1},
+};
+
+// var pause = {
+//   type: jsPsychHtmlButtonResponse,
+//   stimulus: `<p style="font-size:25px; color:black;">Pause</p><hr>
+//              <p>Take the time of a short break.</p>
+//              <p>When you are ready again, click on <b>Resume</b></p>
+//             `,
+
+//   choices: ["Resume"],
+//     };
+
+var trialIndex;
+var trialIndexNew; 
+
+var condPause = {
+  timeline: [pause],
+  conditional_function: function(){
+    trialIndex = all_trials[q].session
+   
+    if (q+1 < all_trials.length){
+      trialIndexNew= all_trials[q+1].session 
+      console.log("Could go another one")
+    } else {
+      trialIndexNew= all_trials[q].session 
+      console.log("END Q+1")
+    }
+    
+    console.log(`SESSION IS ${trialIndex}, NEW WILL BE ${trialIndexNew}`)
+    if(trialIndex === trialIndexNew){
+      console.log("Not break")
+      return false
+     } else if(trialIndex === 0 && trialIndexNew ===1){
+        console.log("End training")
+        return true
+     } else if(trialIndex === trialIndexNew - 1)
+        console.log("Break")
+        return true
+     }
+};
+
+var loopTask = {
+  timeline: [
+    extractInf,
+    launchSound,
+    audioPlay,
+    task,
+    dataSave,
+    condPause
+    ],
+  loop_function: function(){
+    if(i === all_trials.length-1){
+      console.log("END LOOP")
+      i = 0
+      return false
+    } else {
+      i++
+      q++
+      console.log(`LOOP ${i}`)
+      return true
+    }
+  }
+};
+
+
+var globalProcedure = {
+  timeline: [
+    loopTask, 
+    ],
+};
+
+timeline.push(globalProcedure); 
+
+//------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+var endExp = {
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `<p style="font-size:22px; color:black;">Thanks for your participation!</p><hr>
+                `,
+  choices: ["End the experiment"],
+    };
+    
+timeline.push(endExp);
+
+
+
+  
+// END CODE ABOVE -------------------------------------------------------------------------------------------------------------
+
+jsPsych.run(timeline);
+  
+</script>
+</html>
